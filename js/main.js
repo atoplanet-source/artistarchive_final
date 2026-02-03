@@ -72,6 +72,15 @@
       }
     }, 1200);
 
+    // Step 3: Scroll arrow fades in after tagline
+    const scrollArrow = document.getElementById('scrollArrow');
+    setTimeout(() => {
+      if (scrollArrow) {
+        scrollArrow.style.transition = 'opacity 1s ease';
+        scrollArrow.style.opacity = '1';
+      }
+    }, 2000);
+
     // Navbar visibility is now controlled by scroll (not entrance animation)
   });
 })();
@@ -272,6 +281,12 @@ function handleScroll() {
   const windowHeight = window.innerHeight;
   const heroSection = document.getElementById('hero');
   const heroHeight = heroSection ? heroSection.offsetHeight : windowHeight;
+
+  // Hide scroll arrow when user starts scrolling
+  const scrollArrow = document.getElementById('scrollArrow');
+  if (scrollArrow) {
+    scrollArrow.style.opacity = scrollY > 50 ? '0' : '1';
+  }
 
   // Show navbar only after scrolling past hero + gradient transition
   const navbar = document.getElementById('navbar');

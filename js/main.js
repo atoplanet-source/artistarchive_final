@@ -279,8 +279,8 @@ function handleScroll() {
   const navLinks = document.querySelector('.hidden.md\\:flex');
   const menuBtn = document.getElementById('menuBtn');
   
-  // Navbar appears after hero (115vh) + most of gradient (70vh * 0.7)
-  const showNavbar = scrollY > heroHeight + (windowHeight * 0.5);
+  // Navbar appears after hero (115vh) + gradient (70vh) - when bg is white
+  const showNavbar = scrollY > heroHeight + (windowHeight * 0.9);
   
   if (navbar) {
     if (showNavbar) {
@@ -395,30 +395,31 @@ if (menuBtn) {
   });
 }
 
-// Navbar background transition on scroll
+// Navbar background transition on scroll - only show when background is white
 window.addEventListener('scroll', () => {
   const navbar = document.getElementById('navbar');
   const hero = document.getElementById('hero');
   if (navbar && hero) {
     const heroHeight = hero.offsetHeight;
-    // Start transitioning when scrolled past 20% of hero, fully solid at 60%
-    const scrollThreshold = heroHeight * 0.2;
-    const solidThreshold = heroHeight * 0.6;
+    const windowHeight = window.innerHeight;
+    // Only show navbar after hero + gradient transition (when bg is white)
+    const showThreshold = heroHeight + (windowHeight * 0.85);
+    const solidThreshold = heroHeight + (windowHeight * 0.95);
 
     if (window.scrollY > solidThreshold) {
-      // Fully solid white navbar after hero
+      // Fully solid white navbar
       navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
       navbar.style.backdropFilter = 'blur(12px)';
       navbar.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.08)';
-    } else if (window.scrollY > scrollThreshold) {
+    } else if (window.scrollY > showThreshold) {
       // Gradual transition zone
-      const progress = (window.scrollY - scrollThreshold) / (solidThreshold - scrollThreshold);
+      const progress = (window.scrollY - showThreshold) / (solidThreshold - showThreshold);
       const opacity = progress * 0.98;
       navbar.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
       navbar.style.backdropFilter = `blur(${progress * 12}px)`;
       navbar.style.boxShadow = progress > 0.5 ? `0 1px 3px rgba(0, 0, 0, ${progress * 0.08})` : 'none';
     } else {
-      // Transparent in hero section
+      // Transparent before white section
       navbar.style.backgroundColor = 'transparent';
       navbar.style.backdropFilter = 'none';
       navbar.style.boxShadow = 'none';

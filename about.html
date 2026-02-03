@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Artist Archives</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-black">
+
+  <!-- Navigation -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-500">
+    <div class="w-full px-6 md:px-12 py-6 flex items-center justify-between">
+      <!-- Logo -->
+      <a class='text-2xl font-light tracking-tight' href='/'>
+        <span class="font-semibold">A</span>a
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-12">
+        <a class='nav-link text-sm tracking-wide text-black font-medium transition-colors duration-300 relative' href='/about'>About</a>
+        <a class='text-sm tracking-wide px-6 py-2.5 border border-black text-black hover:bg-black hover:text-white transition-all duration-300' href='/#contact'>Contact</a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button id="menuBtn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 relative z-50">
+        <span id="line1" class="block w-6 h-px bg-black transition-all duration-300 -translate-y-1"></span>
+        <span id="line2" class="block w-6 h-px bg-black transition-all duration-300"></span>
+        <span id="line3" class="block w-6 h-px bg-black transition-all duration-300 translate-y-1"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="md:hidden fixed inset-0 bg-white z-40 opacity-0 pointer-events-none transition-all duration-500">
+      <div class="flex flex-col items-center justify-center h-full gap-8">
+        <a class='mobile-link text-3xl font-light tracking-wide' href='/about'>About</a>
+        <a class='mobile-link text-xl tracking-wide px-8 py-3 border border-black' href='/#contact'>Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-32 pb-16 md:pt-40 md:pb-24 px-6 md:px-8">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter mb-6">
+        About Artist Archives
+      </h1>
+      <p class="text-xl md:text-2xl font-light text-gray-600 leading-relaxed">
+        The most comprehensive library of ethically sourced, copyright-cleared, offline, high-quality photography and video (2000–2025)
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission Statement -->
+  <section class="py-16 md:py-24 px-6 md:px-8 border-t border-gray-100">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-8">Our Mission</h2>
+      <p class="text-lg md:text-xl font-light leading-relaxed text-gray-700 mb-6">
+        Artist Archives is a curated visual dataset of rare, high-quality imagery spanning fashion, beauty, travel, lifestyle, celebrity, product, and portraiture — sourced directly from the personal archives of elite commercial photographers.
+      </p>
+      <p class="text-lg md:text-xl font-light leading-relaxed text-gray-700">
+        More than a collection, it's a culturally rich, ethically sourced resource built for the future of AI and content creation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Vision -->
+  <section class="py-16 md:py-24 px-6 md:px-8 bg-gray-50">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-8">Vision</h2>
+      <p class="text-lg md:text-xl font-light leading-relaxed text-gray-700 mb-8">
+        To build the most comprehensive, ethically sourced archive of 21st-century commercial photography and video — serving as a foundational visual dataset for AI development, cultural research, and creative innovation.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-6 bg-white border border-gray-200">
+          <h3 class="font-medium mb-2">Generative AI Systems</h3>
+          <p class="text-gray-600 text-sm">Powering multimodal AI with diverse, high-quality training data</p>
+        </div>
+        <div class="p-6 bg-white border border-gray-200">
+          <h3 class="font-medium mb-2">Bias-Aware Datasets</h3>
+          <p class="text-gray-600 text-sm">Diverse, realistic imagery for responsible AI development</p>
+        </div>
+        <div class="p-6 bg-white border border-gray-200">
+          <h3 class="font-medium mb-2">Aesthetic Modeling</h3>
+          <p class="text-gray-600 text-sm">Historical and stylistic reference across industries</p>
+        </div>
+        <div class="p-6 bg-white border border-gray-200">
+          <h3 class="font-medium mb-2">Creative Projects</h3>
+          <p class="text-gray-600 text-sm">Depth, style, and authenticity for demanding work</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Opportunity -->
+  <section class="py-16 md:py-24 px-6 md:px-8">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-8">The Opportunity</h2>
+      <p class="text-2xl md:text-3xl font-light leading-relaxed mb-6">
+        <span class="text-[#e63946]">Billions</span> of elite, copyright-cleared images are offline.
+      </p>
+      <p class="text-lg md:text-xl font-light leading-relaxed text-gray-700">
+        The most culturally influential photography and video of the early 21st century sits inaccessible—unseen and unavailable for today's growing content and training needs. Artist Archives unlocks this vast, high-quality, rights-cleared visual dataset for companies building the next generation of AI, creative tools, and media products.
+      </p>
+    </div>
+  </section>
+
+  <!-- What We Offer -->
+  <section class="py-16 md:py-24 px-6 md:px-8 bg-black text-white">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-12">What We Offer</h2>
+      <div class="space-y-8">
+        <div class="flex gap-6">
+          <div class="text-[#e63946] text-2xl font-light">01</div>
+          <div>
+            <h3 class="text-xl font-medium mb-2">Exclusive Access</h3>
+            <p class="text-gray-400">Never published, never scraped — sourced directly from creators</p>
+          </div>
+        </div>
+        <div class="flex gap-6">
+          <div class="text-[#e63946] text-2xl font-light">02</div>
+          <div>
+            <h3 class="text-xl font-medium mb-2">Diverse & Authentic</h3>
+            <p class="text-gray-400">Real people, places, and aesthetics from across decades, regions, and industries</p>
+          </div>
+        </div>
+        <div class="flex gap-6">
+          <div class="text-[#e63946] text-2xl font-light">03</div>
+          <div>
+            <h3 class="text-xl font-medium mb-2">Elite Craftsmanship</h3>
+            <p class="text-gray-400">Created by top-tier commercial photographers under visionary creative direction</p>
+          </div>
+        </div>
+        <div class="flex gap-6">
+          <div class="text-[#e63946] text-2xl font-light">04</div>
+          <div>
+            <h3 class="text-xl font-medium mb-2">Ethically Sourced</h3>
+            <p class="text-gray-400">Rights-cleared, legally licensable, and ready for compliant training</p>
+          </div>
+        </div>
+        <div class="flex gap-6">
+          <div class="text-[#e63946] text-2xl font-light">05</div>
+          <div>
+            <h3 class="text-xl font-medium mb-2">Culturally Relevant</h3>
+            <p class="text-gray-400">Visuals that mirror the evolving style, identity, and aspirations of modern society</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cultural Relevance -->
+  <section class="py-16 md:py-24 px-6 md:px-8 bg-gray-50">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-8">Cultural + Historical Relevance</h2>
+      <p class="text-xl font-light text-gray-600 mb-8">
+        A visual record of early 21st-century culture — built for memory, learning, and meaning.
+      </p>
+      <p class="text-lg font-light leading-relaxed text-gray-700">
+        Artist Archives captures the visual language from products to cars to how people lived, dressed, worked, and connected from 2000–2025. It offers a licensed, high-integrity reference library for historians, machine learning teams, and creative professionals — a foundation for future-facing tools that want to learn from the past, ethically and in-depth.
+      </p>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 md:py-24 px-6 md:px-8 border-t border-gray-100">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold tracking-tight mb-6">Ready to Learn More?</h2>
+      <p class="text-lg font-light text-gray-600 mb-8">
+        Join the future of ethically sourced creative content
+      </p>
+      <a class='inline-block px-12 py-4 bg-black text-white text-sm tracking-widest uppercase hover:bg-[#e63946] transition-colors duration-300' href='/#contact'>
+        Get in Touch
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 md:px-8 border-t border-gray-100">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <p class="text-sm text-gray-500">&copy; 2025 Artist Archives. All rights reserved.</p>
+      <div class="flex items-center gap-8">
+        <a href="#" class="text-sm text-gray-500 hover:text-black transition-colors duration-300">Privacy</a>
+        <a href="#" class="text-sm text-gray-500 hover:text-black transition-colors duration-300">Terms</a>
+        <a href="#" class="text-sm text-gray-500 hover:text-black transition-colors duration-300">Legal</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const line1 = document.getElementById('line1');
+    const line2 = document.getElementById('line2');
+    const line3 = document.getElementById('line3');
+    let menuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      if (menuOpen) {
+        mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+        mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
+        line1.classList.add('rotate-45', 'translate-y-px');
+        line1.classList.remove('-translate-y-1');
+        line2.classList.add('opacity-0');
+        line3.classList.add('-rotate-45', '-translate-y-px');
+        line3.classList.remove('translate-y-1');
+      } else {
+        mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+        mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
+        line1.classList.remove('rotate-45', 'translate-y-px');
+        line1.classList.add('-translate-y-1');
+        line2.classList.remove('opacity-0');
+        line3.classList.remove('-rotate-45', '-translate-y-px');
+        line3.classList.add('translate-y-1');
+      }
+    });
+
+    // Navbar shadow on scroll
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-sm');
+      } else {
+        navbar.classList.remove('shadow-sm');
+      }
+    });
+  </script>
+</body>
+</html>

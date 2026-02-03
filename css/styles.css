@@ -1,0 +1,386 @@
+/* Artist Archives - Main Stylesheet */
+
+/* Import creative font for headlines - Source Serif is clean and professional */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+/* Import Inter as main font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Inter font class */
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #000;
+  color: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Fix navbar covering content when scrolling to anchors */
+section[id] {
+  scroll-margin-top: 90px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Creative font for specific headlines */
+.font-creative {
+  font-family: 'Source Serif 4', Georgia, serif;
+}
+
+/* Film grain overlay */
+.film-grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Animated grain for more organic feel */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(1%, 1%); }
+  30% { transform: translate(-1%, 1%); }
+  40% { transform: translate(1%, -1%); }
+  50% { transform: translate(-1%, 0%); }
+  60% { transform: translate(1%, 0%); }
+  70% { transform: translate(0%, 1%); }
+  80% { transform: translate(0%, -1%); }
+  90% { transform: translate(1%, 1%); }
+}
+
+.film-grain {
+  animation: grain 0.5s steps(1) infinite;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeInUp 1s ease forwards;
+}
+
+.fade-in-delay-1 { animation-delay: 0.2s; opacity: 0; }
+.fade-in-delay-2 { animation-delay: 0.4s; opacity: 0; }
+.fade-in-delay-3 { animation-delay: 0.6s; opacity: 0; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Entrance Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 1.2s ease forwards;
+}
+
+/* Hide navbar links initially for animation */
+.nav-links-animated {
+  opacity: 0;
+}
+
+/* Navigation */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: black;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+#navbar {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Color Background */
+#colorBackground {
+  transition: background 2s ease-in-out;
+}
+
+#colorWrapper {
+  transition: opacity 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Exposure Meter Styles */
+.exposure-meter {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.exposure-meter.visible {
+  opacity: 1;
+}
+
+.meter-container {
+  position: relative;
+  width: 320px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 15px;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.meter-track {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.15);
+  transform: translateY(-50%);
+}
+
+.meter-needle {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  width: 14px;
+  height: 14px;
+  background: #dc2626;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 0.6s cubic-bezier(0.68, -0.15, 0.32, 1.15);
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.3), 0 0 10px rgba(230, 57, 70, 0.5);
+  z-index: 5;
+}
+
+.meter-stops {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.meter-stop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.meter-stop:hover {
+  transform: scale(1.1);
+}
+
+.meter-stop:hover .meter-stop-label {
+  opacity: 1;
+}
+
+.meter-stop-tick {
+  width: 2px;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  transition: opacity 0.3s ease, height 0.3s ease, background 0.3s ease;
+}
+
+.meter-stop.active .meter-stop-tick {
+  height: 16px;
+  background: #dc2626;
+}
+
+.meter-stop-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+  opacity: 0.7;
+  transition: opacity 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+}
+
+.meter-stop.active .meter-stop-label {
+  opacity: 1;
+  font-weight: 600;
+  color: #000;
+}
+
+/* Mode Dial Styles */
+.mode-dial {
+  position: fixed;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  cursor: grab;
+}
+
+.mode-dial.visible {
+  opacity: 1;
+}
+
+.dial-outer {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.1),
+    0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dial-notch-fixed {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 10px solid #dc2626;
+  z-index: 10;
+}
+
+.dial-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  transform: translate(-50%, -50%);
+  overflow: hidden;
+}
+
+.dial-grip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.68, -0.15, 0.32, 1.15);
+}
+
+.dial-grip-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  transform-origin: center top;
+}
+
+.dial-section-marker {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: #dc2626;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  transform-origin: center 28px;
+}
+
+.dial-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+}
+
+.dial-indicator {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  background: #000;
+  color: white;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+/* Hide on mobile */
+@media (max-width: 768px) {
+  .exposure-meter,
+  .mode-dial {
+    display: none !important;
+  }
+}

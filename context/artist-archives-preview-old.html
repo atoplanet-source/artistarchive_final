@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Archives</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    ::selection {
+      background: #000;
+      color: #fff;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    .fade-in {
+      animation: fadeInUp 1s ease forwards;
+    }
+    .fade-in-delay-1 { animation-delay: 0.2s; opacity: 0; }
+    .fade-in-delay-2 { animation-delay: 0.4s; opacity: 0; }
+    .fade-in-delay-3 { animation-delay: 0.6s; opacity: 0; }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: black;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .gallery-item:hover .gallery-overlay {
+      background: rgba(0,0,0,0.3);
+    }
+    .gallery-item:hover .gallery-label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .gallery-item:hover .gallery-placeholder {
+      transform: scale(1.05);
+    }
+    .team-photo:hover img {
+      filter: grayscale(0);
+    }
+    .form-input:focus + .input-line {
+      width: 100%;
+    }
+    .toggle-btn.active {
+      background: black;
+      color: white;
+      border-color: black;
+    }
+    
+    /* Dynamic background that transitions with scroll */
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Navbar color transitions */
+    #navbar {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    #navbar.text-white a {
+      color: rgba(255, 255, 255, 0.9);
+    }
+    #navbar.text-white a:hover {
+      color: white;
+    }
+    #navbar.text-white .border-black {
+      border-color: white;
+      color: white;
+    }
+    #navbar.text-white .border-black:hover {
+      background-color: white;
+      color: rgb(35, 35, 40);
+    }
+    #navbar.text-white #line1,
+    #navbar.text-white #line2,
+    #navbar.text-white #line3 {
+      background-color: white;
+    }
+    
+    /* Exposure Meter Styles */
+    .exposure-meter {
+      position: fixed;
+      top: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 40;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .exposure-meter.visible {
+      opacity: 1;
+    }
+    .meter-container {
+      position: relative;
+      width: 320px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 15px;
+      pointer-events: auto;
+      background: rgba(128, 128, 128, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 25px;
+      border: 1px solid rgba(128, 128, 128, 0.2);
+    }
+    .meter-track {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: currentColor;
+      opacity: 0.3;
+    }
+    .meter-needle {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      width: 14px;
+      height: 14px;
+      background: #e63946;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: left 0.6s cubic-bezier(0.68, -0.15, 0.32, 1.15);
+      box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.3), 0 0 10px rgba(230, 57, 70, 0.5);
+      z-index: 5;
+    }
+    .meter-stops {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .meter-stop {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .meter-stop:hover {
+      transform: scale(1.1);
+    }
+    .meter-stop:hover .meter-stop-label {
+      opacity: 1;
+    }
+    .meter-stop-tick {
+      width: 2px;
+      height: 12px;
+      background: currentColor;
+      opacity: 0.5;
+      transition: opacity 0.3s ease, height 0.3s ease, background 0.3s ease;
+    }
+    .meter-stop.active .meter-stop-tick {
+      opacity: 1;
+      height: 16px;
+    }
+    .meter-stop-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      transition: opacity 0.3s ease, color 0.3s ease;
+      white-space: nowrap;
+    }
+    .meter-stop.active .meter-stop-label {
+      opacity: 1;
+      font-weight: 600;
+    }
+    
+    /* Light mode meter */
+    .exposure-meter.light-mode .meter-stop-label {
+      color: #000;
+    }
+    .exposure-meter.light-mode .meter-stop-tick {
+      background: #000;
+    }
+    .exposure-meter.light-mode .meter-track {
+      background: #000;
+    }
+    .exposure-meter.light-mode .meter-container {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Dark mode meter */
+    .exposure-meter.dark-mode .meter-stop-label {
+      color: #fff;
+    }
+    .exposure-meter.dark-mode .meter-stop-tick {
+      background: #fff;
+    }
+    .exposure-meter.dark-mode .meter-track {
+      background: #fff;
+    }
+    .exposure-meter.dark-mode .meter-container {
+      background: rgba(0, 0, 0, 0.6);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Mode Dial Styles */
+    .mode-dial {
+      position: fixed;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 40;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .mode-dial.visible {
+      opacity: 1;
+    }
+    .dial-outer {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      position: relative;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 
+        inset 0 1px 3px rgba(0,0,0,0.1),
+        0 4px 12px rgba(0,0,0,0.1);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .dial-notch-fixed {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 10px solid #e63946;
+      z-index: 10;
+    }
+    .dial-inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      transform: translate(-50%, -50%);
+      transition: border-color 0.3s ease;
+      overflow: hidden;
+    }
+    .dial-grip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.68, -0.15, 0.32, 1.15);
+    }
+    .dial-grip-line {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1px;
+      height: 50%;
+      background: currentColor;
+      opacity: 0.15;
+      transform-origin: center top;
+    }
+    .dial-section-marker {
+      position: absolute;
+      top: 2px;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      background: #e63946;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      transform-origin: center 28px;
+    }
+    .dial-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 16px;
+      height: 16px;
+      background: currentColor;
+      border-radius: 50%;
+      opacity: 0.15;
+    }
+    .dial-indicator {
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      background: currentColor;
+      color: white;
+      border-radius: 3px;
+      white-space: nowrap;
+      transition: background 0.3s ease;
+    }
+    
+    /* Dark mode adjustments */
+    body.dark-mode .dial-outer {
+      background: rgba(30,30,30,0.9);
+    }
+  </style>
+</head>
+<body class="bg-white">
+
+  <!-- Navigation -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-500">
+    <div class="w-full px-6 md:px-12 py-6 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="text-2xl font-light tracking-tight">
+        <span class="font-semibold">A</span>a
+      </a>
+      
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-12">
+        <a href="#about" class="nav-link text-sm tracking-wide text-gray-800 hover:text-black transition-colors duration-300 relative">About</a>
+        <a href="#enterprises" class="nav-link text-sm tracking-wide text-gray-800 hover:text-black transition-colors duration-300 relative">Enterprises</a>
+        <a href="#creators" class="nav-link text-sm tracking-wide text-gray-800 hover:text-black transition-colors duration-300 relative">Creator</a>
+        <a href="#contact" class="text-sm tracking-wide px-6 py-2.5 border border-black text-black hover:bg-black hover:text-white transition-all duration-300">Contact</a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button id="menuBtn" class="md:hidden flex flex-col justify-center items-center w-10 h-10 relative z-50">
+        <span id="line1" class="block w-6 h-px bg-black transition-all duration-300 -translate-y-1"></span>
+        <span id="line2" class="block w-6 h-px bg-black transition-all duration-300"></span>
+        <span id="line3" class="block w-6 h-px bg-black transition-all duration-300 translate-y-1"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="md:hidden fixed inset-0 bg-white z-40 opacity-0 pointer-events-none transition-all duration-500">
+      <div class="flex flex-col items-center justify-center h-full gap-8">
+        <a href="#about" class="mobile-link text-3xl font-light tracking-wide">About</a>
+        <a href="#enterprises" class="mobile-link text-3xl font-light tracking-wide">Enterprises</a>
+        <a href="#creators" class="mobile-link text-3xl font-light tracking-wide">Creator</a>
+        <a href="#contact" class="mobile-link text-xl tracking-wide px-8 py-3 border border-black">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Exposure Meter -->
+  <div id="exposureMeter" class="exposure-meter text-black">
+    <div class="meter-container">
+      <div class="meter-track"></div>
+      <div id="meterNeedle" class="meter-needle"></div>
+      <div class="meter-stops">
+        <div class="meter-stop active" data-index="0">
+          <div class="meter-stop-tick"></div>
+          <div class="meter-stop-label">Home</div>
+        </div>
+        <div class="meter-stop" data-index="1">
+          <div class="meter-stop-tick"></div>
+          <div class="meter-stop-label">Metrics</div>
+        </div>
+        <div class="meter-stop" data-index="2">
+          <div class="meter-stop-tick"></div>
+          <div class="meter-stop-label">Team</div>
+        </div>
+        <div class="meter-stop" data-index="3">
+          <div class="meter-stop-tick"></div>
+          <div class="meter-stop-label">Contact</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mode Dial -->
+  <div id="modeDial" class="mode-dial text-black">
+    <div class="dial-indicator" id="dialIndicator">Home</div>
+    <div class="dial-outer">
+      <!-- Fixed red notch at top -->
+      <div class="dial-notch-fixed"></div>
+      <div class="dial-inner">
+        <div class="dial-grip" id="dialGrip">
+          <!-- Grip lines -->
+          <div class="dial-grip-line" style="transform: rotate(0deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(30deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(60deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(90deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(120deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(150deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(180deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(210deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(240deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(270deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(300deg) translateX(-50%);"></div>
+          <div class="dial-grip-line" style="transform: rotate(330deg) translateX(-50%);"></div>
+          <!-- Section markers on the dial -->
+          <div class="dial-section-marker" style="transform: rotate(0deg);"></div>
+          <div class="dial-section-marker" style="transform: rotate(90deg);"></div>
+          <div class="dial-section-marker" style="transform: rotate(180deg);"></div>
+          <div class="dial-section-marker" style="transform: rotate(270deg);"></div>
+        </div>
+        <div class="dial-center"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen relative overflow-hidden">
+    <!-- Full-screen animated color background -->
+    <div class="absolute inset-0">
+      <div id="colorBackground" class="absolute inset-0"></div>
+      
+      <!-- Frosted overlay for soft, diffused look -->
+      <div class="absolute inset-0 backdrop-blur-[2px] bg-white/20"></div>
+      
+      <!-- Dark overlay for text readability -->
+      <div class="absolute inset-0 bg-black/20"></div>
+    </div>
+    
+    <style>
+      #colorBackground {
+        transition: background 2s ease-in-out;
+      }
+    </style>
+    
+    <script>
+      // Evolving color wheel animation
+      (function() {
+        const colorBg = document.getElementById('colorBackground');
+        let hue = 0;
+        
+        function hslToRgb(h, s, l) {
+          s /= 100;
+          l /= 100;
+          const a = s * Math.min(l, 1 - l);
+          const f = n => {
+            const k = (n + h / 30) % 12;
+            return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+          };
+          return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255)];
+        }
+        
+        function updateColors() {
+          const hue1 = hue % 360;
+          const hue2 = (hue + 60) % 360;
+          const hue3 = (hue + 120) % 360;
+          const hue4 = (hue + 180) % 360;
+          
+          // Brighter, more saturated pastel colors
+          const rgb1 = hslToRgb(hue1, 65, 72);
+          const rgb2 = hslToRgb(hue2, 60, 74);
+          const rgb3 = hslToRgb(hue3, 55, 76);
+          const rgb4 = hslToRgb(hue4, 60, 73);
+          
+          colorBg.style.background = `linear-gradient(135deg, 
+            rgb(${rgb1[0]}, ${rgb1[1]}, ${rgb1[2]}) 0%, 
+            rgb(${rgb2[0]}, ${rgb2[1]}, ${rgb2[2]}) 33%, 
+            rgb(${rgb3[0]}, ${rgb3[1]}, ${rgb3[2]}) 66%, 
+            rgb(${rgb4[0]}, ${rgb4[1]}, ${rgb4[2]}) 100%)`;
+          
+          hue += 0.15; // Faster rotation through the spectrum (~40 seconds per cycle)
+          requestAnimationFrame(updateColors);
+        }
+        
+        updateColors();
+      })();
+    </script>
+    
+    <!-- Text overlay - centered -->
+    <div class="relative z-10 min-h-screen flex flex-col justify-center items-center px-6 md:px-8">
+      <div class="text-center">
+        <img 
+          src="https://res.cloudinary.com/dts0guj2b/image/upload/v1767908906/ArtistArchiveWhiteText_qt9ffd.png" 
+          alt="Artist Archives" 
+          class="h-20 md:h-32 lg:h-40 w-auto mx-auto mb-8 max-w-[90vw]"
+          style="filter: drop-shadow(0 4px 30px rgba(0,0,0,0.3));"
+        />
+        <p class="text-lg md:text-xl lg:text-2xl text-white/90 font-light max-w-3xl mx-auto leading-relaxed tracking-wide" style="text-shadow: 0 2px 20px rgba(0,0,0,0.3);">
+          A rights-cleared archive of <span class="text-[#e63946]">offline</span> commercial photography and video built for the future of AI and content
+        </p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- About / Stats Section -->
+  <section id="about" class="py-24 md:py-32 px-6 md:px-8 border-t border-current/10">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16">
+        <div class="text-center">
+          <div class="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight mb-4 text-[#e63946]">
+            <span id="counter1">0</span>M+
+          </div>
+          <p class="text-lg font-medium tracking-wide mb-1">Images</p>
+          <p class="text-sm opacity-60">Scaling to 1B+</p>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight mb-4 text-[#e63946]">
+            <span id="counter2">0</span>+
+          </div>
+          <p class="text-lg font-medium tracking-wide mb-1">Elite Photographers</p>
+          <p class="text-sm opacity-60">World-class talent</p>
+        </div>
+        <div class="text-center">
+          <div class="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight mb-4 text-[#e63946]">
+            <span id="counter3">0</span>
+          </div>
+          <p class="text-lg font-medium tracking-wide mb-1">Years of Culture</p>
+          <p class="text-sm opacity-60">2000–2025</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enterprises Section -->
+  <section id="enterprises" class="py-32 md:py-40 px-6 md:px-8 bg-black/90 text-white relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/80 to-black/95"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <p class="text-2xl md:text-3xl lg:text-5xl font-light leading-relaxed tracking-wide">
+        <span class="text-[#e63946]">Billions</span> of elite, copyright-cleared images are offline. 
+        <span class="block mt-6 text-gray-400">
+          We unlock this vast dataset for companies building the next generation of AI.
+        </span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section id="team" class="py-24 md:py-32 px-6 md:px-8 bg-white/10 backdrop-blur-sm">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter text-center mb-16 md:mb-20">
+        Meet the Team
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <!-- Philip Wemer -->
+        <div class="text-center">
+          <div class="team-photo aspect-[3/4] bg-gray-200 mb-8 relative overflow-hidden group">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-24 h-24 border border-gray-300 rounded-full flex items-center justify-center">
+                <svg class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <h3 class="text-xl md:text-2xl font-medium tracking-tight mb-2">Philip Wemer</h3>
+          <p class="text-sm tracking-widest uppercase mb-4 text-[#e63946]">Founder</p>
+          <p class="leading-relaxed text-sm md:text-base opacity-80">26 years of experience in commercial photography, building relationships with the world's most prestigious brands and publications.</p>
+        </div>
+        
+        <!-- Matt Petersen -->
+        <div class="text-center">
+          <div class="team-photo aspect-[3/4] bg-gray-200 mb-8 relative overflow-hidden group">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-24 h-24 border border-gray-300 rounded-full flex items-center justify-center">
+                <svg class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <h3 class="text-xl md:text-2xl font-medium tracking-tight mb-2">Matt Petersen</h3>
+          <p class="text-sm tracking-widest uppercase mb-4 text-[#e63946]">Advisory Board</p>
+          <p class="leading-relaxed text-sm md:text-base opacity-80">VC/PE and Brand Marketing expert with deep expertise in scaling media companies and technology ventures.</p>
+        </div>
+        
+        <!-- Dewey Nicks -->
+        <div class="text-center">
+          <div class="team-photo aspect-[3/4] bg-gray-200 mb-8 relative overflow-hidden group">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-24 h-24 border border-gray-300 rounded-full flex items-center justify-center">
+                <svg class="w-10 h-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <h3 class="text-xl md:text-2xl font-medium tracking-tight mb-2">Dewey Nicks</h3>
+          <p class="text-sm tracking-widest uppercase mb-4 text-[#e63946]">Advisory Board</p>
+          <p class="leading-relaxed text-sm md:text-base opacity-80">Industry legend in fashion and celebrity photography, whose work has defined visual culture for three decades.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 md:py-32 px-6 md:px-8 border-t border-current/10">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter text-center mb-6">
+        Get in Touch
+      </h2>
+      <p class="opacity-60 text-center mb-12 md:mb-16">
+        Join the future of ethically sourced creative content
+      </p>
+      
+      <!-- Artist/Business Toggle -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 sm:gap-0 mb-8">
+        <button id="artistBtn" class="toggle-btn flex items-center justify-center gap-3 px-6 md:px-8 py-4 border border-gray-200 hover:border-black transition-all duration-300 sm:border-r-0 bg-white text-black">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="text-sm tracking-wide">I'm an Artist</span>
+        </button>
+        
+        <button id="businessBtn" class="toggle-btn flex items-center justify-center gap-3 px-6 md:px-8 py-4 border border-gray-200 hover:border-black transition-all duration-300 bg-white text-black">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+          <span class="text-sm tracking-wide">I'm a Business</span>
+        </button>
+      </div>
+
+      <!-- Contextual subtitle -->
+      <p id="roleSubtitle" class="text-center text-sm text-gray-400 mb-10 h-5 transition-all duration-300 opacity-0"></p>
+      
+      <!-- Form -->
+      <form id="contactForm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-8">
+          <div class="relative">
+            <input
+              type="text"
+              name="name"
+              class="form-input w-full px-0 py-4 border-0 border-b border-gray-200 focus:border-black focus:outline-none transition-colors duration-300 bg-transparent"
+              placeholder="Your name"
+              required
+            />
+            <div class="input-line absolute bottom-0 left-0 h-px bg-black transition-all duration-300 w-0"></div>
+          </div>
+          
+          <div class="relative">
+            <input
+              type="email"
+              name="email"
+              class="form-input w-full px-0 py-4 border-0 border-b border-gray-200 focus:border-black focus:outline-none transition-colors duration-300 bg-transparent"
+              placeholder="Your email"
+              required
+            />
+            <div class="input-line absolute bottom-0 left-0 h-px bg-black transition-all duration-300 w-0"></div>
+          </div>
+        </div>
+        
+        <div class="mb-10 relative">
+          <textarea
+            name="message"
+            rows="4"
+            class="form-input w-full px-0 py-4 border-0 border-b border-gray-200 focus:border-black focus:outline-none transition-colors duration-300 bg-transparent resize-none"
+            placeholder="Tell us more..."
+          ></textarea>
+          <div class="input-line absolute bottom-0 left-0 h-px bg-black transition-all duration-300 w-0"></div>
+        </div>
+        
+        <div class="text-center">
+          <button
+            type="submit"
+            class="w-full sm:w-auto px-16 py-4 bg-black text-white text-sm tracking-widest uppercase hover:bg-[#e63946] transition-colors duration-300"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 md:px-8 border-t border-current/10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <p class="text-sm opacity-60">© 2025 Artist Archives. All rights reserved.</p>
+      <div class="flex items-center gap-8">
+        <a href="#" class="text-sm opacity-60 hover:opacity-100 transition-opacity duration-300">Privacy</a>
+        <a href="#" class="text-sm opacity-60 hover:opacity-100 transition-opacity duration-300">Terms</a>
+        <a href="#" class="text-sm opacity-60 hover:opacity-100 transition-opacity duration-300">Legal</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Section configuration for scroll tracking
+    const sections = [
+      { id: 'hero', name: 'Home' },
+      { id: 'about', name: 'Metrics' },
+      { id: 'team', name: 'Team' },
+      { id: 'contact', name: 'Contact' }
+    ];
+    
+    // Elements
+    const exposureMeter = document.getElementById('exposureMeter');
+    const meterNeedle = document.getElementById('meterNeedle');
+    const meterStops = document.querySelectorAll('.meter-stop');
+    const modeDial = document.getElementById('modeDial');
+    const dialGrip = document.getElementById('dialGrip');
+    const dialIndicator = document.getElementById('dialIndicator');
+    const dialOuter = document.querySelector('.dial-outer');
+    
+    let currentSection = 0;
+    
+    // Function to calculate needle position based on active label
+    function updateNeedlePosition(index) {
+      const stop = meterStops[index];
+      if (stop && meterNeedle) {
+        const container = document.querySelector('.meter-container');
+        const containerRect = container.getBoundingClientRect();
+        const stopRect = stop.getBoundingClientRect();
+        
+        // Calculate center of the stop relative to container
+        const stopCenter = stopRect.left + (stopRect.width / 2) - containerRect.left;
+        const percentage = (stopCenter / containerRect.width) * 100;
+        
+        meterNeedle.style.left = percentage + '%';
+      }
+    }
+    
+    // Mode dial drag functionality
+    let isDragging = false;
+    let startY = 0;
+    let dragThreshold = 30; // pixels needed to trigger section change
+    let accumulatedDelta = 0;
+    
+    modeDial.style.cursor = 'grab';
+    
+    modeDial.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      accumulatedDelta = 0;
+      modeDial.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaY = e.clientY - startY;
+      accumulatedDelta += deltaY - (accumulatedDelta > 0 ? Math.floor(accumulatedDelta / dragThreshold) * dragThreshold : Math.ceil(accumulatedDelta / dragThreshold) * dragThreshold);
+      startY = e.clientY;
+      
+      // Check if we've accumulated enough movement to change section
+      if (Math.abs(accumulatedDelta) >= dragThreshold) {
+        const direction = accumulatedDelta > 0 ? 1 : -1; // down = next section, up = previous
+        const targetSection = Math.max(0, Math.min(sections.length - 1, currentSection + direction));
+        
+        if (targetSection !== currentSection) {
+          const element = document.getElementById(sections[targetSection].id);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+        accumulatedDelta = 0;
+      }
+    });
+    
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        modeDial.style.cursor = 'grab';
+        accumulatedDelta = 0;
+      }
+    });
+    
+    // Touch support for mobile
+    modeDial.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startY = e.touches[0].clientY;
+      accumulatedDelta = 0;
+      e.preventDefault();
+    });
+    
+    document.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      
+      const deltaY = e.touches[0].clientY - startY;
+      accumulatedDelta += deltaY - (accumulatedDelta > 0 ? Math.floor(accumulatedDelta / dragThreshold) * dragThreshold : Math.ceil(accumulatedDelta / dragThreshold) * dragThreshold);
+      startY = e.touches[0].clientY;
+      
+      if (Math.abs(accumulatedDelta) >= dragThreshold) {
+        const direction = accumulatedDelta > 0 ? 1 : -1;
+        const targetSection = Math.max(0, Math.min(sections.length - 1, currentSection + direction));
+        
+        if (targetSection !== currentSection) {
+          const element = document.getElementById(sections[targetSection].id);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+        accumulatedDelta = 0;
+      }
+    });
+    
+    document.addEventListener('touchend', () => {
+      isDragging = false;
+      accumulatedDelta = 0;
+    });
+    
+    // Click on meter stops to scroll to section
+    meterStops.forEach((stop, index) => {
+      stop.style.cursor = 'pointer';
+      stop.style.pointerEvents = 'auto';
+      stop.addEventListener('click', () => {
+        const section = sections[index];
+        const element = document.getElementById(section.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+    
+    // Background color interpolation
+    function interpolateColor(startRGB, endRGB, progress) {
+      const r = Math.round(startRGB[0] + (endRGB[0] - startRGB[0]) * progress);
+      const g = Math.round(startRGB[1] + (endRGB[1] - startRGB[1]) * progress);
+      const b = Math.round(startRGB[2] + (endRGB[2] - startRGB[2]) * progress);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+    
+    // Scroll handler for all effects
+    function handleScroll() {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight - windowHeight;
+      const scrollProgress = Math.min(scrollY / docHeight, 1);
+      
+      // Show/hide meter and dial after scrolling past hero
+      const showControls = scrollY > 100;
+      exposureMeter.classList.toggle('visible', showControls);
+      modeDial.classList.toggle('visible', showControls);
+      
+      // Background color transition (white to dark grey)
+      const startColor = [255, 255, 255]; // White
+      const endColor = [35, 35, 40]; // Dark grey
+      const bgColor = interpolateColor(startColor, endColor, scrollProgress);
+      document.body.style.backgroundColor = bgColor;
+      
+      // Determine text color based on background brightness
+      const brightness = 255 - (220 * scrollProgress);
+      const isDark = brightness < 128;
+      
+      // Update text colors for meter and dial
+      const textColor = isDark ? 'rgb(230, 230, 230)' : 'rgb(0, 0, 0)';
+      const bgForDial = isDark ? 'rgba(60, 60, 65, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+      
+      // Toggle light/dark mode classes on exposure meter
+      if (isDark) {
+        exposureMeter.classList.add('dark-mode');
+        exposureMeter.classList.remove('light-mode');
+      } else {
+        exposureMeter.classList.add('light-mode');
+        exposureMeter.classList.remove('dark-mode');
+      }
+      
+      modeDial.style.color = textColor;
+      dialIndicator.style.background = textColor;
+      dialIndicator.style.color = isDark ? 'rgb(35, 35, 40)' : 'white';
+      dialOuter.style.background = bgForDial;
+      dialOuter.style.borderColor = textColor;
+      
+      // Update body text color for readability
+      document.body.style.color = textColor;
+      
+      // Update navbar based on scroll position - always visible with background
+      const navbar = document.getElementById('navbar');
+      if (isDark) {
+        navbar.classList.add('text-white');
+        navbar.classList.remove('text-black');
+        navbar.style.backgroundColor = 'rgba(35, 35, 40, 0.98)';
+      } else {
+        navbar.classList.remove('text-white');
+        navbar.classList.add('text-black');
+        navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+      }
+      
+      // Find current section
+      let newSection = 0;
+      sections.forEach((section, index) => {
+        const element = document.getElementById(section.id);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= windowHeight * 0.4) {
+            newSection = index;
+          }
+        }
+      });
+      
+      // Update if section changed
+      if (newSection !== currentSection) {
+        currentSection = newSection;
+        
+        // Update exposure meter needle position (dynamically calculated)
+        updateNeedlePosition(currentSection);
+        
+        // Update meter stop active states
+        meterStops.forEach((stop, i) => {
+          stop.classList.toggle('active', i === currentSection);
+        });
+        
+        // Update mode dial rotation (90 degrees per section for 4 sections)
+        const dialRotation = currentSection * 90;
+        dialGrip.style.transform = `rotate(${dialRotation}deg)`;
+        
+        // Update indicator text
+        dialIndicator.textContent = sections[currentSection].name;
+      }
+    }
+    
+    // Recalculate needle position on window resize
+    window.addEventListener('resize', () => {
+      updateNeedlePosition(currentSection);
+    });
+    
+    // Add hero section ID for tracking
+    document.querySelector('section').id = 'hero';
+    
+    // Initialize and listen for scroll
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    
+    // Initialize needle position after DOM is ready
+    setTimeout(() => {
+      updateNeedlePosition(currentSection);
+    }, 100);
+
+    // Smooth scroll for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const line1 = document.getElementById('line1');
+    const line2 = document.getElementById('line2');
+    const line3 = document.getElementById('line3');
+    let menuOpen = false;
+
+    menuBtn.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      if (menuOpen) {
+        mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+        mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
+        line1.classList.add('rotate-45', 'translate-y-px');
+        line1.classList.remove('-translate-y-1');
+        line2.classList.add('opacity-0');
+        line3.classList.add('-rotate-45', '-translate-y-px');
+        line3.classList.remove('translate-y-1');
+      } else {
+        mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+        mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
+        line1.classList.remove('rotate-45', 'translate-y-px');
+        line1.classList.add('-translate-y-1');
+        line2.classList.remove('opacity-0');
+        line3.classList.remove('-rotate-45', '-translate-y-px');
+        line3.classList.add('translate-y-1');
+      }
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        menuOpen = false;
+        mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+        mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
+        line1.classList.remove('rotate-45', 'translate-y-px');
+        line1.classList.add('-translate-y-1');
+        line2.classList.remove('opacity-0');
+        line3.classList.remove('-rotate-45', '-translate-y-px');
+        line3.classList.add('translate-y-1');
+      });
+    });
+
+    // Navbar shadow on scroll
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-sm', 'bg-white/95', 'backdrop-blur-sm');
+      } else {
+        navbar.classList.remove('shadow-sm', 'bg-white/95', 'backdrop-blur-sm');
+      }
+    });
+
+    // Counter animation
+    function animateCounter(elementId, target, duration = 2000) {
+      const element = document.getElementById(elementId);
+      const start = 0;
+      const startTime = performance.now();
+      
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.floor(progress * target);
+        element.textContent = current;
+        
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+      
+      requestAnimationFrame(update);
+    }
+
+    // Trigger counters when visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter('counter1', 300);
+          animateCounter('counter2', 100);
+          animateCounter('counter3', 25);
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(document.getElementById('counter1').parentElement.parentElement.parentElement);
+
+    // Artist/Business toggle
+    const artistBtn = document.getElementById('artistBtn');
+    const businessBtn = document.getElementById('businessBtn');
+    const roleSubtitle = document.getElementById('roleSubtitle');
+
+    artistBtn.addEventListener('click', () => {
+      artistBtn.classList.add('active');
+      businessBtn.classList.remove('active');
+      roleSubtitle.textContent = "Tell us about your work — we'd love to have you join our roster.";
+      roleSubtitle.classList.remove('opacity-0');
+      roleSubtitle.classList.add('opacity-100');
+    });
+
+    businessBtn.addEventListener('click', () => {
+      businessBtn.classList.add('active');
+      artistBtn.classList.remove('active');
+      roleSubtitle.textContent = "Tell us about your needs — let's discuss licensing our dataset.";
+      roleSubtitle.classList.remove('opacity-0');
+      roleSubtitle.classList.add('opacity-100');
+    });
+
+    // Form input animations
+    document.querySelectorAll('.form-input').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.nextElementSibling.style.width = '100%';
+      });
+      input.addEventListener('blur', () => {
+        input.nextElementSibling.style.width = '0';
+      });
+    });
+
+    // Form submission
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for your submission! We will be in touch soon.');
+    });
+  </script>
+</body>
+</html>

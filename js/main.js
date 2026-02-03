@@ -273,13 +273,14 @@ function handleScroll() {
   const heroSection = document.getElementById('hero');
   const heroHeight = heroSection ? heroSection.offsetHeight : windowHeight;
 
-  // Show navbar only after scrolling past hero section
+  // Show navbar only after scrolling past hero + gradient transition
   const navbar = document.getElementById('navbar');
   const navLogo = document.querySelector('.nav-logo');
   const navLinks = document.querySelector('.hidden.md\\:flex');
   const menuBtn = document.getElementById('menuBtn');
   
-  const showNavbar = scrollY > heroHeight * 0.8;
+  // Navbar appears after hero (115vh) + most of gradient (70vh * 0.7)
+  const showNavbar = scrollY > heroHeight + (windowHeight * 0.5);
   
   if (navbar) {
     if (showNavbar) {
@@ -297,8 +298,8 @@ function handleScroll() {
     }
   }
 
-  // Show/hide meter and dial after scrolling past hero
-  const showControls = scrollY > heroHeight * 0.8;
+  // Show/hide meter and dial after scrolling past hero + gradient
+  const showControls = scrollY > heroHeight + (windowHeight * 0.5);
   if (exposureMeter) exposureMeter.classList.toggle('visible', showControls);
   if (modeDial) modeDial.classList.toggle('visible', showControls);
 

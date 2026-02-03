@@ -112,7 +112,12 @@
   <section id="hero" class="relative" style="min-height: 115vh;">
     <div class="relative z-10 flex flex-col justify-center items-center px-6 md:px-8" style="min-height: 100vh;">
       <div class="text-center max-w-4xl relative">
-        <img id="heroLogo" src="images/logo-hero.png" alt="Artist Archive" class="w-full max-w-2xl mx-auto opacity-0 relative z-10" style="filter: invert(1) drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));" />
+        <img id="heroLogo" src="images/logo-hero.png" alt="Artist Archive" class="w-full max-w-2xl mx-auto mb-10 opacity-0 relative z-10" style="filter: invert(1) drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));" />
+        <p id="heroTagline" class="font-inter text-base md:text-lg lg:text-xl text-white font-light tracking-normal opacity-0" style="text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+          The source for the most comprehensive dataset<br>
+          of professional photography + video<br>
+          for AI training and Machine Learning
+        </p>
       </div>
     </div>
   </section>
@@ -127,6 +132,7 @@
   <section id="features" class="py-24 md:py-32 px-6 md:px-8 bg-white">
     <div class="max-w-5xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+        <!-- 1. Ethically Sourced -->
         <div class="text-center p-8">
           <div class="w-16 h-16 mx-auto mb-6 bg-black rounded-full flex items-center justify-center">
             <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -135,22 +141,11 @@
           </div>
           <h3 class="text-lg font-semibold mb-3">Ethically Sourced</h3>
           <p class="text-gray-600 leading-relaxed">
-            Exclusively from industry professionals. <span class="text-[#dc2626] font-medium">Offline</span> archives dating back to 2000.
+            Exclusively from Professional Photographers' <span class="text-[#dc2626] font-medium">offline</span> archives dating back to 2000 and beyond...
           </p>
         </div>
 
-        <div class="text-center p-8">
-          <div class="w-16 h-16 mx-auto mb-6 bg-black rounded-full flex items-center justify-center">
-            <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold mb-3">Data Rich & Organized</h3>
-          <p class="text-gray-600 leading-relaxed">
-            A highly organized alternative to public, scraped, or amateur datasets.
-          </p>
-        </div>
-
+        <!-- 2. Rights Cleared (moved to middle) -->
         <div class="text-center p-8">
           <div class="w-16 h-16 mx-auto mb-6 bg-[#dc2626] rounded-full flex items-center justify-center">
             <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -159,7 +154,20 @@
           </div>
           <h3 class="text-lg font-semibold mb-3">Rights Cleared</h3>
           <p class="text-gray-600 leading-relaxed">
-            Fully licensed and legally cleared for AI training and commercial use.
+            Contractually licensed and legally cleared for AI training and Machine Learning use.
+          </p>
+        </div>
+
+        <!-- 3. Data Rich & Organized -->
+        <div class="text-center p-8">
+          <div class="w-16 h-16 mx-auto mb-6 bg-black rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-3">Data Rich & Organized</h3>
+          <p class="text-gray-600 leading-relaxed">
+            Hybrid AI + Human Metadata. A highly organized alternative to public, scraped, amateur, or free datasets.
           </p>
         </div>
       </div>
@@ -201,9 +209,9 @@
   <section class="py-24 md:py-32 px-6 md:px-8 bg-black text-white">
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-16">
-        <p class="text-sm tracking-widest uppercase text-[#dc2626] mb-4">Collaboration Is The Future</p>
+        <p class="text-sm tracking-widest uppercase text-[#dc2626] mb-4">Two paths, one archive</p>
         <h2 class="text-3xl md:text-4xl font-semibold tracking-tight">
-          Two paths, one archive
+          Collaboration Is The Future
         </h2>
       </div>
 
@@ -215,15 +223,15 @@
             <div class="flex gap-4">
               <div class="flex-shrink-0 w-8 h-8 rounded-full bg-[#dc2626] text-white flex items-center justify-center text-sm font-medium">1</div>
               <div>
-                <p class="font-medium mb-1">Tell us what you need</p>
-                <p class="text-sm text-gray-400">A massive dataset of inaccessible (offline) photographic and video content</p>
+                <p class="font-medium mb-1">A Comprehensive Photographic + Video Library</p>
+                <p class="text-sm text-gray-400">A massive dataset of elite content</p>
               </div>
             </div>
             <div class="ml-4 w-px h-6 bg-gray-700"></div>
             <div class="flex gap-4">
               <div class="flex-shrink-0 w-8 h-8 rounded-full bg-[#dc2626] text-white flex items-center justify-center text-sm font-medium">2</div>
               <div>
-                <p class="font-medium mb-1">We curate a sample</p>
+                <p class="font-medium mb-1">Enterprise-Safe Licensing</p>
                 <p class="text-sm text-gray-400">Entirely rights cleared</p>
               </div>
             </div>
@@ -231,16 +239,16 @@
             <div class="flex gap-4">
               <div class="flex-shrink-0 w-8 h-8 rounded-full bg-[#dc2626] text-white flex items-center justify-center text-sm font-medium">3</div>
               <div>
-                <p class="font-medium mb-1">License agreement</p>
-                <p class="text-sm text-gray-400">Clean, comprehensive metadata, labeling and description</p>
+                <p class="font-medium mb-1">Dataset Integrity</p>
+                <p class="text-sm text-gray-400">Hybrid AI + Human comprehensive metadata, labeling and description</p>
               </div>
             </div>
             <div class="ml-4 w-px h-6 bg-gray-700"></div>
             <div class="flex gap-4">
               <div class="flex-shrink-0 w-8 h-8 rounded-full bg-[#dc2626] text-white flex items-center justify-center text-sm font-medium">4</div>
               <div>
-                <p class="font-medium mb-1">Secure delivery</p>
-                <p class="text-sm text-gray-400">Historical imagery and video dating back to 2000 from professionals all over the globe</p>
+                <p class="font-medium mb-1">Abundant and Contextual Data</p>
+                <p class="text-sm text-gray-400">Historical imagery and video dating back beyond 2000 from professionals all over the globe</p>
               </div>
             </div>
           </div>
@@ -318,7 +326,7 @@
           <div class="flex flex-wrap gap-2 mt-8">
             <span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs tracking-wide rounded-full">Rights Cleared</span>
             <span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs tracking-wide rounded-full">Formatted to Specification</span>
-            <span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs tracking-wide rounded-full">Built for AI Training Models</span>
+            <span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs tracking-wide rounded-full">Built for AI/ML Training Models</span>
           </div>
         </div>
 
@@ -329,7 +337,7 @@
             <div class="pt-2">
               <h3 class="font-medium mb-1">Flexible Licensing</h3>
               <p class="text-gray-600 text-sm leading-relaxed">
-                Full-archive access, curated subsets, or time-series collections spanning 25 years.
+                Full-archive access, curated subsets, or time-series collections spanning 25+ years.
               </p>
             </div>
           </div>
@@ -339,7 +347,7 @@
             <div class="pt-2">
               <h3 class="font-medium mb-1">Production Ready</h3>
               <p class="text-gray-600 text-sm leading-relaxed">
-                Extensive metadata, quality-checked files, secure delivery.
+                Metadata-rich, quality-controlled professional content — structured, curated, and delivered at enterprise scale.
               </p>
             </div>
           </div>

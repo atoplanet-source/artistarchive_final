@@ -280,7 +280,7 @@ function handleScroll() {
   const menuBtn = document.getElementById('menuBtn');
   
   // Navbar appears after hero (115vh) + gradient (70vh) - when bg is white
-  const showNavbar = scrollY > heroHeight + (windowHeight * 0.9);
+  const showNavbar = scrollY > heroHeight + (windowHeight * 0.65);
   
   if (navbar) {
     if (showNavbar) {
@@ -403,8 +403,8 @@ window.addEventListener('scroll', () => {
     const heroHeight = hero.offsetHeight;
     const windowHeight = window.innerHeight;
     // Only show navbar after hero + gradient transition (when bg is white)
-    const showThreshold = heroHeight + (windowHeight * 0.85);
-    const solidThreshold = heroHeight + (windowHeight * 0.95);
+    const showThreshold = heroHeight + (windowHeight * 0.6);
+    const solidThreshold = heroHeight + (windowHeight * 0.7);
 
     if (window.scrollY > solidThreshold) {
       // Fully solid white navbar

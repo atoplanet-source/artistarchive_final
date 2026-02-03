@@ -72,21 +72,7 @@
       }
     }, 1200);
 
-    // Step 3: Navbar elements fade in
-    setTimeout(() => {
-      if (navLogo) {
-        navLogo.style.transition = 'opacity 0.8s ease';
-        navLogo.style.opacity = '1';
-      }
-      if (navLinks) {
-        navLinks.style.transition = 'opacity 0.8s ease';
-        navLinks.style.opacity = '1';
-      }
-      if (menuBtn) {
-        menuBtn.style.transition = 'opacity 0.8s ease';
-        menuBtn.style.opacity = '1';
-      }
-    }, 1800);
+    // Navbar visibility is now controlled by scroll (not entrance animation)
   });
 })();
 
@@ -284,9 +270,35 @@ meterStops.forEach((stop, index) => {
 function handleScroll() {
   const scrollY = window.scrollY;
   const windowHeight = window.innerHeight;
+  const heroSection = document.getElementById('hero');
+  const heroHeight = heroSection ? heroSection.offsetHeight : windowHeight;
+
+  // Show navbar only after scrolling past hero section
+  const navbar = document.getElementById('navbar');
+  const navLogo = document.querySelector('.nav-logo');
+  const navLinks = document.querySelector('.hidden.md\\:flex');
+  const menuBtn = document.getElementById('menuBtn');
+  
+  const showNavbar = scrollY > heroHeight * 0.8;
+  
+  if (navbar) {
+    if (showNavbar) {
+      navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+      navbar.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+      if (navLogo) navLogo.style.opacity = '1';
+      if (navLinks) navLinks.style.opacity = '1';
+      if (menuBtn) menuBtn.style.opacity = '1';
+    } else {
+      navbar.style.backgroundColor = 'transparent';
+      navbar.style.boxShadow = 'none';
+      if (navLogo) navLogo.style.opacity = '0';
+      if (navLinks) navLinks.style.opacity = '0';
+      if (menuBtn) menuBtn.style.opacity = '0';
+    }
+  }
 
   // Show/hide meter and dial after scrolling past hero
-  const showControls = scrollY > 100;
+  const showControls = scrollY > heroHeight * 0.8;
   if (exposureMeter) exposureMeter.classList.toggle('visible', showControls);
   if (modeDial) modeDial.classList.toggle('visible', showControls);
 

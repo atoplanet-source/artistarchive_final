@@ -143,7 +143,13 @@ body {
 }
 
 #navbar {
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+#navbar .nav-logo,
+#navbar .hidden.md\:flex,
+#navbar #menuBtn {
+  transition: opacity 0.4s ease;
 }
 
 /* Color Background */

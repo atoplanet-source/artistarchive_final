@@ -7,7 +7,9 @@
   const colorBg = document.getElementById('colorBackground');
   if (!colorBg) return;
 
-  let hue = 0;
+  let saturation = 15; // Start very desaturated (grayish)
+  let hue = 215; // Start at blue
+  let frameCount = 0;
 
   function hslToRgb(h, s, l) {
     s /= 100;
@@ -21,16 +23,33 @@
   }
 
   function updateColors() {
-    const hue1 = hue % 360;
-    const hue2 = (hue + 60) % 360;
-    const hue3 = (hue + 120) % 360;
-    const hue4 = (hue + 180) % 360;
+    frameCount++;
+    
+    // Phase 1 (first ~2 sec): Hold grayish blue
+    // Phase 2 (next ~5 sec): Increase saturation while staying blue
+    // Phase 3 (ongoing): Slowly rotate hue while keeping saturation
+    
+    if (frameCount > 120) {
+      // After 2 seconds, start increasing saturation
+      if (saturation < 60) {
+        saturation += 0.08; // Gradual saturation increase
+      }
+    }
+    
+    if (frameCount > 420) {
+      // After ~7 seconds, start very slow hue rotation
+      hue += 0.08; // Very slow, smooth color cycling
+    }
 
-    // Brighter, more saturated pastel colors
-    const rgb1 = hslToRgb(hue1, 65, 72);
-    const rgb2 = hslToRgb(hue2, 60, 74);
-    const rgb3 = hslToRgb(hue3, 55, 76);
-    const rgb4 = hslToRgb(hue4, 60, 73);
+    const hue1 = hue % 360;
+    const hue2 = (hue + 30) % 360;  // Tighter hue spread for smoother gradient
+    const hue3 = (hue + 60) % 360;
+    const hue4 = (hue + 90) % 360;
+
+    const rgb1 = hslToRgb(hue1, saturation, 75);
+    const rgb2 = hslToRgb(hue2, saturation, 77);
+    const rgb3 = hslToRgb(hue3, saturation, 76);
+    const rgb4 = hslToRgb(hue4, saturation, 74);
 
     colorBg.style.background = `linear-gradient(135deg,
       rgb(${rgb1[0]}, ${rgb1[1]}, ${rgb1[2]}) 0%,
@@ -38,7 +57,6 @@
       rgb(${rgb3[0]}, ${rgb3[1]}, ${rgb3[2]}) 66%,
       rgb(${rgb4[0]}, ${rgb4[1]}, ${rgb4[2]}) 100%)`;
 
-    hue += 0.15; // ~40 seconds per full color cycle
     requestAnimationFrame(updateColors);
   }
 

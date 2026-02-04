@@ -1,0 +1,45 @@
+<svg viewBox="0 0 600 160" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;display=swap');
+    
+    .logo-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      fill: none;
+      stroke: #2d2d2d;
+      stroke-width: 1;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: draw 2.5s ease-out forwards;
+    }
+    
+    .line-1 {
+      animation-delay: 0s;
+    }
+    
+    .line-2 {
+      animation-delay: 0.3s;
+    }
+    
+    @keyframes draw {
+      0% {
+        stroke-dashoffset: 1000;
+        fill-opacity: 0;
+      }
+      70% {
+        stroke-dashoffset: 0;
+        fill-opacity: 0;
+      }
+      100% {
+        stroke-dashoffset: 0;
+        fill-opacity: 1;
+        fill: #2d2d2d;
+      }
+    }
+  </style>
+  
+  <text x="300" y="65" text-anchor="middle" class="logo-text line-1">ARTIST</text>
+  <text x="300" y="135" text-anchor="middle" class="logo-text line-2">ARCHIVES</text>
+</svg>

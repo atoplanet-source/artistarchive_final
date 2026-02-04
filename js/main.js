@@ -63,6 +63,51 @@
   updateColors();
 })();
 
+// SVG Path Drawing Animation
+(function() {
+  window.addEventListener('load', () => {
+    const heroLogo = document.getElementById('heroLogo');
+    if (!heroLogo) return;
+
+    const line1Paths = heroLogo.querySelectorAll('.line1 .draw-path');
+    const line2Paths = heroLogo.querySelectorAll('.line2 .draw-path');
+
+    // Initialize all paths with their actual lengths
+    function initPath(path) {
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = length;
+      path.style.strokeDashoffset = length;
+    }
+
+    // Animate a path to draw in
+    function animatePath(path, duration, delay) {
+      const length = path.getTotalLength();
+      path.style.transition = `stroke-dashoffset ${duration}s ease-in-out ${delay}s`;
+      setTimeout(() => {
+        path.style.strokeDashoffset = '0';
+      }, 10);
+    }
+
+    // Initialize all paths
+    line1Paths.forEach(initPath);
+    line2Paths.forEach(initPath);
+
+    // Animate line 1 (ARTIST) after 500ms
+    setTimeout(() => {
+      line1Paths.forEach((path, i) => {
+        animatePath(path, 2.5, i * 0.15);
+      });
+    }, 500);
+
+    // Animate line 2 (ARCHIVES) after line 1
+    setTimeout(() => {
+      line2Paths.forEach((path, i) => {
+        animatePath(path, 2.5, i * 0.15);
+      });
+    }, 3500);
+  });
+})();
+
 // Entrance Animation Sequence
 (function() {
   const heroLogo = document.getElementById('heroLogo');

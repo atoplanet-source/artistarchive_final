@@ -2,6 +2,11 @@
  * Artist Archives - Main JavaScript
  */
 
+// Show page once everything is ready
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.classList.add('loaded');
+});
+
 // Evolving color wheel animation for hero background
 (function() {
   const colorBg = document.getElementById('colorBackground');
@@ -63,48 +68,114 @@
   updateColors();
 })();
 
-// SVG Path Drawing Animation
+// SVG Line Drawing Animation
 (function() {
   window.addEventListener('load', () => {
     const heroLogo = document.getElementById('heroLogo');
     if (!heroLogo) return;
+    
+    const svg = heroLogo.querySelector('svg');
+    if (!svg) return;
 
-    const line1Paths = heroLogo.querySelectorAll('.line1 .draw-path');
-    const line2Paths = heroLogo.querySelectorAll('.line2 .draw-path');
+    const line1Paths = svg.querySelectorAll('.line1 .draw-path, .line1 rect');
+    const line2Paths = svg.querySelectorAll('.line2 .draw-path, .line2 rect');
+    const allPaths = svg.querySelectorAll('.draw-path, rect');
 
-    // Initialize all paths with their actual lengths
-    function initPath(path) {
-      const length = path.getTotalLength();
-      path.style.strokeDasharray = length;
-      path.style.strokeDashoffset = length;
+    // Initialize path with its length for animation
+    function initPath(el) {
+      let length;
+      if (el.tagName === 'rect') {
+        const w = parseFloat(el.getAttribute('width'));
+        const h = parseFloat(el.getAttribute('height'));
+        length = 2 * (w + h);
+      } else {
+        length = el.getTotalLength();
+      }
+      el.style.strokeDasharray = length;
+      el.style.strokeDashoffset = length;
+      el.style.fill = '#1a1a1a';
+      el.style.fillOpacity = '0';
+      el.style.stroke = '#1a1a1a';
+      el.style.strokeOpacity = '1';
     }
 
-    // Animate a path to draw in
-    function animatePath(path, duration, delay) {
-      const length = path.getTotalLength();
-      path.style.transition = `stroke-dashoffset ${duration}s ease-in-out ${delay}s`;
+    // Animate path to draw in
+    function animatePath(el, duration, delay) {
+      el.style.transition = `stroke-dashoffset ${duration}s ease-in-out ${delay}s`;
       setTimeout(() => {
-        path.style.strokeDashoffset = '0';
-      }, 10);
+        el.style.strokeDashoffset = '0';
+      }, 50);
     }
 
-    // Initialize all paths
-    line1Paths.forEach(initPath);
-    line2Paths.forEach(initPath);
+    // Fill paths letter by letter (left to right based on x position)
+    function fillPaths(paths, delay) {
+      setTimeout(() => {
+        // Sort paths by their x position (leftmost first)
+        const sorted = Array.from(paths).sort((a, b) => {
+          const aBox = a.getBBox();
+          const bBox = b.getBBox();
+          return aBox.x - bBox.x;
+        });
+        
+        // Fill each path with staggered delay and smooth animation
+        sorted.forEach((el, i) => {
+          setTimeout(() => {
+            // Start with slight scale down
+            el.style.transformOrigin = 'center center';
+            el.style.transform = 'scale(0.97)';
+            el.style.filter = 'blur(0.5px)';
+            
+            // Animate fill with scale and clarity
+            requestAnimationFrame(() => {
+              el.style.transition = 'fill-opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1), stroke-opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease-out';
+              el.style.fillOpacity = '1';
+              el.style.strokeOpacity = '0';
+              el.style.transform = 'scale(1)';
+              el.style.filter = 'blur(0)';
+            });
+          }, i * 40);
+        });
+      }, delay);
+    }
 
-    // Animate line 1 (ARTIST) after 500ms
+    // Initialize all paths first (hidden state)
+    allPaths.forEach(initPath);
+    
+    // Wait 500ms for background to show, then start animation
     setTimeout(() => {
-      line1Paths.forEach((path, i) => {
-        animatePath(path, 2.5, i * 0.15);
-      });
+      // Fade in the logo container
+      heroLogo.style.transition = 'opacity 0.3s ease-out';
+      heroLogo.style.opacity = '1';
+
+      // Animate line 1 (ARTIST) after logo fades in
+      setTimeout(() => {
+        line1Paths.forEach((path, i) => {
+          animatePath(path, 1.5, i * 0.04);
+        });
+      }, 300);
+
+      // Fill line 1
+      fillPaths(line1Paths, 1600);
+
+      // Animate line 2 (ARCHIVES)
+      setTimeout(() => {
+        line2Paths.forEach((path, i) => {
+          animatePath(path, 1.5, i * 0.04);
+        });
+      }, 1800);
+
+      // Fill line 2
+      fillPaths(line2Paths, 3400);
+
+      // Fade in tagline after ARCHIVES animation completes
+      const tagline = document.getElementById('heroTagline');
+      if (tagline) {
+        setTimeout(() => {
+          tagline.style.transition = 'opacity 0.8s ease-in-out';
+          tagline.style.opacity = '1';
+        }, 4800);
+      }
     }, 500);
-
-    // Animate line 2 (ARCHIVES) after line 1
-    setTimeout(() => {
-      line2Paths.forEach((path, i) => {
-        animatePath(path, 2.5, i * 0.15);
-      });
-    }, 3500);
   });
 })();
 
@@ -118,22 +189,9 @@
 
   // Start with everything hidden, then animate in sequence
   window.addEventListener('load', () => {
-    // Step 1: Logo fades in after 300ms
-    setTimeout(() => {
-      if (heroLogo) {
-        heroLogo.style.transition = 'opacity 1.2s ease, transform 1.2s ease';
-        heroLogo.style.opacity = '1';
-        heroLogo.style.transform = 'scale(1)';
-      }
-    }, 300);
+    // Logo now shows immediately (no animation)
 
-    // Step 2: Tagline fades in after logo
-    setTimeout(() => {
-      if (heroTagline) {
-        heroTagline.style.transition = 'opacity 1s ease';
-        heroTagline.style.opacity = '1';
-      }
-    }, 1200);
+    // Tagline fade is now handled in SVG animation section
 
     // Step 3: Scroll arrow fades in after tagline
     const scrollArrow = document.getElementById('scrollArrow');
